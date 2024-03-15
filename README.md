@@ -1,2 +1,2 @@
-# ProgrammersAlgorithm
-해결한 프로그래머스 문제를 업로드하는 저장소 입니다.
+# Algorithm
+알고리즘 문제 및 코드를 업로드하는 저장소 입니다.
