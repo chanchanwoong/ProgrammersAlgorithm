@@ -40,14 +40,8 @@ public class Main {
                     // 길이 획득
                     length = z - j;
 
-                    // 세로 길이가 벗어나지 않는지 확인
-                    // 가로는 for문에 의해서 자연스레 범위안에 있는 것
-                    if(!(i+length < n)){
-                        continue;
-                    }
-
                     // 범위 안에 것 중 꼭짓점 확인
-                    if(arr[i][j] == arr[i+length][j] && arr[i][j] == arr[i+length][j+length]){
+                    if((i+length < n) && arr[i][j] == arr[i+length][j] && arr[i][j] == arr[i+length][j+length]){
                         area = Math.max(area, (length + 1) * (length + 1));
                     }
                 }
