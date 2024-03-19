@@ -34,15 +34,10 @@ public class Main {
             for (int j=0; j<m-1; j++){
                 // arr[i][j] 대상으로 나머지 값들과 일치하는게 있는지 찾는다.
                 for (int z=j+1; z<m; z++){
-                    if(arr[i][j] != arr[i][z]){
-                        continue;
-                    }
-                    // 길이 획득
-                    length = z - j;
-
+               
                     // 범위 안에 것 중 꼭짓점 확인
-                    if((i+length < n) && arr[i][j] == arr[i+length][j] && arr[i][j] == arr[i+length][j+length]){
-                        area = Math.max(area, (length + 1) * (length + 1));
+                    if((arr[i][j] == arr[i][z]) && (i+z-j < n) && arr[i][j] == arr[i+z-j][j] && arr[i][j] == arr[i+z-j][z]){
+                        area = Math.max(area, (z-j + 1) * (z-j + 1));
                     }
                 }
             }
