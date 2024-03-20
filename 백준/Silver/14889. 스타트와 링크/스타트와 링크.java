@@ -63,12 +63,12 @@ public class Main {
         for (int i = 0; i < N - 1; i++) {
             for (int j = i + 1; j < N; j++) {
                 // i 번째 사람과 j 번째 사람이 true라면 스타트팀으로 점수 플러스
-                if (visit[i] == true && visit[j] == true) {
+                if (visit[i] && visit[j]) {
                     team_start += map[i][j];
                     team_start += map[j][i];
                 }
                 // i 번째 사람과 j 번째 사람이 false라면 링크팀으로 점수 플러스
-                else if (visit[i] == false && visit[j] == false) {
+                else if (!visit[i] && !visit[j]) {
                     team_link += map[i][j];
                     team_link += map[j][i];
                 }
