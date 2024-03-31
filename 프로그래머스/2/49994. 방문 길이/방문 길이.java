@@ -1,42 +1,57 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 class Solution {
-    public int solution(String dirs) {
-       int answer = 0;
-        int x1 = 0;
-        int y1 = 0;
-        int x2 = 0;
-        int y2 = 0;
-        HashSet set = new HashSet();
+    static String dirs;
+    static int[][] map = new int[11][11];
+    static boolean[][][] visit = new boolean[11][11][4];
+    static int dx[] = {0, 1, 0, -1};
+    static int dy[] = {-1, 0, 1, 0};
+    static int x = 5, y = 5;
 
-        for(int i=0; i<dirs.length(); i++){
-            String from = "("+x1+","+y1+")";
-            String to = null;
+    public static int solution(String dirs) {
+        int answer = 0;
 
-            // 범위를 벗어나면 (x2,y2) = (x1,y2) 되야 한다.
-            if(dirs.charAt(i) == 'U' && y1 < 5){
-                x2 = x1;
-                y2 = y1 + 1;
-            }else if(dirs.charAt(i) == 'D' && y1 > -5){
-                x2 = x1;
-                y2 = y1 - 1;
-            }else if(dirs.charAt(i) == 'L' && x1 > -5){
-                x2 = x1 - 1;
-                y2 = y1;
-            }else if(dirs.charAt(i) == 'R' && x1 < 5){
-                x2 = x1 + 1;
-                y2 = y1;
-            }else{
-                // 범위를 벗어난 경우 set에 추가안하고 다음 반복으로 넘김
+        for (int i = 0; i < dirs.length(); i++) {
+            char dir = dirs.charAt(i);
+            int dirIndex = 0;
+            if (dir == 'U') {
+                dirIndex = 0;
+            } else if (dir == 'R') {
+                dirIndex = 1;
+            } else if (dir == 'D') {
+                dirIndex = 2;
+            } else if (dir == 'L') {
+                dirIndex = 3;
+            }
+            int nx = x + dx[dirIndex];
+            int ny = y + dy[dirIndex];
+
+            // 영역 확인
+            if (nx < 0 || ny < 0 || nx >= 11 || ny >= 11) {
                 continue;
             }
-            to = "("+x2+","+y2+")";
-            set.add(from + "," + to);
-            set.add(to + "," + from);
-            x1=x2;
-            y1=y2;
+
+            // 방문 확인
+            if (!visit[nx][ny][dirIndex]) {
+                visit[nx][ny][dirIndex] = true;
+
+                dirIndex = (dirIndex % 2 == 0) ? 2 - dirIndex : 4 - dirIndex;
+                // 반대 방향도 확인
+                visit[x][y][dirIndex] = true;
+                answer++;
+            }
+            x = nx;
+            y = ny;
         }
-        answer = set.size() / 2;
         return answer;
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        dirs = br.readLine();
+        int result = solution(dirs);
+        System.out.println(result);
     }
 }
