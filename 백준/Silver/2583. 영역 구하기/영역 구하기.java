@@ -1,97 +1,83 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    static boolean[][] visited;
-    // 동서남북 이동할 경로
+    static int m, n;
     static int[] dx = {0,1,0,-1};
     static int[] dy = {1,0,-1,0};
-    static int m;
-    static int n;
     static int[][] map;
+    static boolean[][] visited;
 
-    public static void main(String args[]){
-        Scanner sc = new Scanner(System.in);
-        m = sc.nextInt();
-        n = sc.nextInt();
-        int k = sc.nextInt();
-        map = new int[m][n];
-        visited = new boolean[m][n];
-
-        // 지나간 곳 1로 채우기
-        for(int i=0; i<k; i++){
-            int lx = sc.nextInt();
-            int ly = sc.nextInt();
-            int rx = sc.nextInt();
-            int ry = sc.nextInt();
-            for(int y=ly; y<ry; y++){
-                for(int x=lx; x<rx; x++){
-                    map[y][x] = 1;
-                }
-            }
-        }
-
-        solution(m, n, k, map);
-    }
-    public static void solution(int m, int n, int k, int[][] map){
-        int numberOfArea = 0;
-        ArrayList<Integer> areaList = new ArrayList<>();
-
-        // 뻉뺑 돌면서 안간 곳을 찾아야 한다.
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                // 방문하지 않았거나, 직사각형이 아닌 곳을 들려야 한다.
-                if(!visited[i][j] && map[i][j] == 0){
-                    // 넓이
-                    int area = bfs(i, j);
-                    areaList.add(area);
-                    numberOfArea++;
-                }
-            }
-        }
-        System.out.println(numberOfArea);
-
-        // 넓이 오름차순해서 출력
-        Collections.sort(areaList);
-        for(int i : areaList){
-            System.out.print(i + " ");
-        }
-    }
-    public static int bfs(int x, int y){
-        // 영역 넓이
-        int area = 1;
-        // 좌표를 저장할 큐 생성
+    public static int bfs(int x, int y) {
         Queue<int[]> q = new LinkedList<>();
-        // 큐에 첫 시작할 영역 넣음
-        q.offer(new int[] {x, y});
-        // 첫 시작점 간 영역으로 바꿈
+        q.offer(new int[]{x,y});
         visited[x][y] = true;
+        int area = 1;
 
-        // 큐가 빌 때 까지 진행한다.
-        while(!q.isEmpty()){
-            // 맨 처음 들어갔던 좌표 추출(첫 값 삭제)
-            int[] coordinate = q.poll();
-            int queueX = coordinate[0];
-            int queueY = coordinate[1];
+        while(!q.isEmpty()) {
+            int[] data = q.poll();
+            int curX = data[0];
+            int curY = data[1];
 
-            // 동서남북으로 움직일 때, 계산
             for(int i=0; i<4; i++){
-                int nextX = queueX + dx[i];
-                int nextY = queueY + dy[i];
+                int nextX = curX + dx[i];
+                int nextY = curY + dy[i];
 
-                // 이동 경로가 원점보다 커야하고,
-                if(nextX >= 0 && nextY >= 0 && nextX < m && nextY < n ){
-                    // 방문한 곳이면 안되고, 가로막히지 않은 곳이어야 한다.
-                    if(!visited[nextX][nextY] && map[nextX][nextY] == 0){
-                        // 들린 곳은 방문했다고 표시
+                if(nextX >= 0 && nextY >= 0 && nextX < m && nextY < n) {
+                    if(!visited[nextX][nextY] && map[nextX][nextY] == 0) {
                         visited[nextX][nextY] = true;
-                        // 현재 위치를 큐에 삽입
                         q.offer(new int[]{nextX, nextY});
                         area++;
                     }
                 }
-
             }
         }
         return area;
+    }
+
+    public static void main(String args[]) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        m = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+        map = new int[m][n];
+        visited = new boolean[m][n];
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < k; i++) {
+            st = new StringTokenizer(br.readLine());
+            int x1 = Integer.parseInt(st.nextToken());
+            int y1 = Integer.parseInt(st.nextToken());
+            int x2 = Integer.parseInt(st.nextToken());
+            int y2 = Integer.parseInt(st.nextToken());
+
+            for (int j = y1; j < y2; j++) {
+                for (int l = x1; l < x2; l++) {
+                    map[j][l] = 1;      // 벽 있는 곳
+                }
+            }
+        }
+
+        // 벽이 없고 방문하지 않은 곳에서 bfs를 통해 넓이 획득
+        for (int i=0; i<m; i++){
+            for (int j=0; j<n; j++){
+                if (map[i][j] == 0 && !visited[i][j]){
+                    int area = bfs(i,j);
+                    list.add(area);
+                }
+            }
+        }
+
+        // list 길이 오름차순 정렬
+        Collections.sort(list);
+
+        System.out.println(list.size());
+        for(int i=0; i<list.size(); i++){
+            System.out.print(list.get(i) + " ");
+        }
     }
 }
