@@ -5,28 +5,27 @@ import java.util.*;
 
 public class Main {
     static int m, n;
-    static int[] dx = {0,1,0,-1};
-    static int[] dy = {1,0,-1,0};
-    static int[][] map;
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {1, 0, -1, 0};
     static boolean[][] visited;
 
     public static int bfs(int x, int y) {
         Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{x,y});
+        q.offer(new int[]{x, y});
         visited[x][y] = true;
         int area = 1;
 
-        while(!q.isEmpty()) {
+        while (!q.isEmpty()) {
             int[] data = q.poll();
             int curX = data[0];
             int curY = data[1];
 
-            for(int i=0; i<4; i++){
+            for (int i = 0; i < 4; i++) {
                 int nextX = curX + dx[i];
                 int nextY = curY + dy[i];
 
-                if(nextX >= 0 && nextY >= 0 && nextX < m && nextY < n) {
-                    if(!visited[nextX][nextY] && map[nextX][nextY] == 0) {
+                if (nextX >= 0 && nextY >= 0 && nextX < m && nextY < n) {
+                    if (!visited[nextX][nextY]) {
                         visited[nextX][nextY] = true;
                         q.offer(new int[]{nextX, nextY});
                         area++;
@@ -44,7 +43,6 @@ public class Main {
         m = Integer.parseInt(st.nextToken());
         n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
-        map = new int[m][n];
         visited = new boolean[m][n];
         List<Integer> list = new ArrayList<>();
 
@@ -57,16 +55,16 @@ public class Main {
 
             for (int j = y1; j < y2; j++) {
                 for (int l = x1; l < x2; l++) {
-                    map[j][l] = 1;      // 벽 있는 곳
+                    visited[j][l] = true; // 벽이 있는 곳을 방문한 것으로 처리
                 }
             }
         }
 
         // 벽이 없고 방문하지 않은 곳에서 bfs를 통해 넓이 획득
-        for (int i=0; i<m; i++){
-            for (int j=0; j<n; j++){
-                if (map[i][j] == 0 && !visited[i][j]){
-                    int area = bfs(i,j);
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j]) {
+                    int area = bfs(i, j);
                     list.add(area);
                 }
             }
@@ -76,7 +74,7 @@ public class Main {
         Collections.sort(list);
 
         System.out.println(list.size());
-        for(int i=0; i<list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             System.out.print(list.get(i) + " ");
         }
     }
