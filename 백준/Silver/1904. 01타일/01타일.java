@@ -18,7 +18,7 @@ public class Main {
 
         int result = 0;
 
-        // 현재 단계의 타일에 0을 추가한 경우
+        // 현재 단계의 타일에 1을 추가한 경우
         if (size + 1 <= n) {
             result += solution(size + 1) % 15746;
         }
@@ -39,9 +39,6 @@ public class Main {
 
         // 메모이제이션을 위한 배열 초기화
         memo = new int[n + 1];
-//        for (int i = 0; i <= n; i++) {
-//            memo[i] = -1; // 초기값으로 -1로 설정
-//        }
 
         // 결과 출력
         System.out.println(solution(0) % 15746);
