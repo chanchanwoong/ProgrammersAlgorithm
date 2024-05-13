@@ -8,7 +8,7 @@ public class Main {
     static String[] pwd, alphabet;
 
     public static void solution(int len, int start) {
-        if (len >= l) {
+        if (len == l) {
             if (check(pwd)) {
                 for (String p : pwd) {
                     System.out.print(p);
