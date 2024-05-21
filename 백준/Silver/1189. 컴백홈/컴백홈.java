@@ -56,15 +56,4 @@ public class Main {
             }
         }
     }
-
-    // 위치를 저장할 객체
-    public static class Point {
-        int x;
-        int y;
-
-        public Point(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 }
