@@ -32,6 +32,7 @@ public class Main {
                 int num = Integer.parseInt(st.nextToken());
                 map[i][j] = num;
 
+                // result 영역을 미리 할당
                 if (num == 0) result[i][j] = 0;
                 else if (num == 2) {
                     startX = i;
@@ -41,6 +42,7 @@ public class Main {
                 else result[i][j] = -1;
             }
         }
+        isVisited[startX][startY] = true;
         bfs(startX, startY);
 
         for (int i = 0; i < n; i++) {
@@ -51,12 +53,13 @@ public class Main {
         }
         bw.flush();
         bw.close();
+        br.close();
     }
 
     public static void bfs(int x, int y) {
         Queue<Point> q = new LinkedList<>();
         q.add(new Point(x, y));
-        isVisited[x][y] = true;
+//        isVisited[x][y] = true;
 
         while (!q.isEmpty()) {
             Point curPoint = q.poll();
@@ -70,13 +73,13 @@ public class Main {
                 if (isVisited[nextX][nextY]) continue;
 
                 q.add(new Point(nextX, nextY));
+                // 새로 진입한 영역은 기존 영역에 1칸 더 갔음
                 result[nextX][nextY] = result[curPoint.x][curPoint.y] + 1;
                 isVisited[nextX][nextY] = true;
 
             }
         }
     }
-
 }
 
 class Point {
