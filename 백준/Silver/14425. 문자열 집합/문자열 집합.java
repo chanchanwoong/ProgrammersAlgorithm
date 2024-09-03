@@ -15,31 +15,18 @@ class Main {
         final int M = Integer.parseInt(st.nextToken());
 
         // 집합 S 저장
-        storeSetS(br, N);
+        for(int i = 0; i < N; i++) s.add(br.readLine());
 
         // 입력된 단어 검사
-        checkInputString(br, M);
+        for(int i = 0; i < M; i++) {
+            String input = br.readLine();
+            if(s.contains(input)) answer++;
+        }        
         
         bw.write(String.valueOf(answer));
-        // bw.write(answer + "");
         bw.flush();
         
         br.close();
         bw.close();
-    }
-
-    // 집합 S 저장 메서드
-    private static void storeSetS(BufferedReader br, int N) throws IOException{
-        for(int i = 0; i < N; i++) {
-            s.add(br.readLine());
-        }
-    }
-
-    // 입력 String 검사 메서드
-    private static void checkInputString(BufferedReader br, int M) throws IOException {
-        for(int i = 0; i < M; i++) {
-            String input = br.readLine();
-            if(s.contains(input)) answer++;
-        }
     }
 }
