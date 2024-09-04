@@ -1,5 +1,4 @@
 import java.util.*;
-import java.lang.*;
 import java.io.*;
 
 class Main {
@@ -8,19 +7,36 @@ class Main {
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        bw.write(String.valueOf(getCombination(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken()))));
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+
+        // 동적 계획법을 이용한 조합 계산
+        int result = getCombination(n, k);
+        bw.write(String.valueOf(result));
         bw.flush();
         
         br.close();
         bw.close();
     }
 
-    // 재귀 호출을 이용한 조합 수 메서드
-    // 기저 조건 : nCk = nC0 = 0
-    // 점화식 : nCk = n-1Cr-k + n-1Ck
+    // 동적 계획법을 이용한 조합 계산 메서드
     private static int getCombination(int n, int k) {
-        // 기저조건
-        if(n == k || k == 0) return 1;
-        else return getCombination(n - 1, k - 1) + getCombination(n - 1, k);
+        // dp 테이블 초기화
+        int[][] dp = new int[n + 1][k + 1];
+
+        // 테이블 채우기
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= Math.min(i, k); j++) {
+                // 기본 조건
+                if (j == 0 || j == i) {
+                    dp[i][j] = 1;
+                } else {
+                    // 점화식
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                }
+            }
+        }
+
+        return dp[n][k];
     }
 }
