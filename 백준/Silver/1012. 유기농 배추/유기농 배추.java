@@ -8,7 +8,6 @@ class Main {
     static boolean[][] visited;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
-    static int answer = 0;
     
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -27,6 +26,8 @@ class Main {
             // 테스트 별 배추 위치 지정
             getMap(st, br);
 
+            int answer = 0;
+
             // bfs 실행
             for(int i = 0; i < M; i++) {
                 for(int j = 0; j < N; j++) {
@@ -34,14 +35,12 @@ class Main {
                     // 배추있는 곳만 bfs 진행
                     if(map[i][j] && !visited[i][j]) {
                         bfs(i, j);
+                        answer++;
                     }
                 }
             }
             
             bw.write(answer + "\n");
-
-            // static 변수인 answer 초기화
-            answer = 0;
         }
 
         bw.flush();
@@ -89,8 +88,5 @@ class Main {
                 }
             }
         }
-
-        // bfs 다 돌면 answer 증감
-        answer++;
     }
 }
