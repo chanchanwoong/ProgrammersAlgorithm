@@ -1,57 +1,43 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.util.*;
 
 class Solution {
-    static String dirs;
-    static int[][] map = new int[11][11];
-    static boolean[][][] visit = new boolean[11][11][4];
-    static int dx[] = {0, 1, 0, -1};
-    static int dy[] = {-1, 0, 1, 0};
-    static int x = 5, y = 5;
 
+    // 다음 좌표 결정을 위한 해시맵 생성
+    private static HashMap<Character, int[]> location = new HashMap<>();
+    
+    // 좌표평면을 벗어나는지 확인
+    private static boolean isValidMove(int nx, int ny) {
+        return 0 <= nx && nx <= 10 && 0 <= ny && ny <= 10;
+    }
+    
+    // 방향에 따른 이동 위치 지정
+    private static void initLocation() {
+        location.put('U', new int[]{0, 1});
+        location.put('D', new int[]{0, -1});
+        location.put('L', new int[]{-1, 0});
+        location.put('R', new int[]{1, 0});
+    }
+    
     public static int solution(String dirs) {
-        int answer = 0;
-
+        initLocation();
+        int x = 5, y = 5;
+        HashSet<String> answer = new HashSet<>();
+        
         for (int i = 0; i < dirs.length(); i++) {
-            char dir = dirs.charAt(i);
-            int dirIndex = 0;
-            if (dir == 'U') {
-                dirIndex = 0;
-            } else if (dir == 'R') {
-                dirIndex = 1;
-            } else if (dir == 'D') {
-                dirIndex = 2;
-            } else if (dir == 'L') {
-                dirIndex = 3;
-            }
-            int nx = x + dx[dirIndex];
-            int ny = y + dy[dirIndex];
-
-            // 영역 확인
-            if (nx < 0 || ny < 0 || nx >= 11 || ny >= 11) {
-                continue;
-            }
-
-            // 방문 확인
-            if (!visit[nx][ny][dirIndex]) {
-                visit[nx][ny][dirIndex] = true;
-
-                dirIndex = (dirIndex % 2 == 0) ? 2 - dirIndex : 4 - dirIndex;
-                // 반대 방향도 확인
-                visit[x][y][dirIndex] = true;
-                answer++;
-            }
+            int[] dir = location.get(dirs.charAt(i));
+            int nx = x + dir[0];
+            int ny = y + dir[1];
+            
+            if (!isValidMove(nx, ny)) continue;
+            
+            answer.add(x + " " + y + " " + nx + " " + ny);
+            answer.add(nx + " " + ny + " " + x + " " + y);
+            
             x = nx;
             y = ny;
         }
-        return answer;
-    }
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        dirs = br.readLine();
-        int result = solution(dirs);
-        System.out.println(result);
+        
+        return answer.size() / 2;
     }
 }
