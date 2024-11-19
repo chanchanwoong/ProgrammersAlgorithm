@@ -5,13 +5,14 @@ class Solution {
     boolean solution(String s) {
         Stack<Character> stack = new Stack<>();
         
-        for (int i = 0; i < s.length(); i++) {
-            char tmp = s.charAt(i);
+        for (char ch : s.toCharArray()) {
             
-            if (tmp == '(') stack.push('(');
-            else if (tmp == ')' && stack.isEmpty()) return false;
-            else if (tmp == ')' && (stack.peek() != '(')) return false;
-            else if (tmp == ')' && (stack.peek() == '(')) stack.pop();
+            if (ch == '(') stack.push('(');
+            else if (ch == ')') {
+                if (stack.isEmpty() || stack.pop() != '(') {
+                    return false;
+                }
+            }
         }
         
         return stack.isEmpty();
