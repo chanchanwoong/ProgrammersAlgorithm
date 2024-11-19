@@ -1,52 +1,40 @@
 import java.util.*;
+
 class Solution {
+    
     public int solution(String s) {
         int answer = 0;
-
-        // s의 길이만큼 반복
-        for(int i=0; i<s.length(); i++) {
-            Stack<String> stack = new Stack<String>();
-
-            for (int j = 0; j < s.length(); j++) {
-                // stack이 빈 경우(처음인 문자인 경우)
-                if (stack.isEmpty()) {
-                    stack.push(String.valueOf(s.charAt(j)));
-                }
-                // stack에 요소가 있는 경우
-                else {
-                    switch (stack.peek()) {
-                        case "(":
-                            if (String.valueOf(s.charAt(j)).equals(")")) {
-                                stack.pop();
-                            } else {
-                                stack.push(String.valueOf(s.charAt(j)));
-                            }
-                            break;
-                        case "{":
-                            if (String.valueOf(s.charAt(j)).equals("}")) {
-                                stack.pop();
-                            } else {
-                                stack.push(String.valueOf(s.charAt(j)));
-                            }
-                            break;
-                        case "[":
-                            if (String.valueOf(s.charAt(j)).equals("]")) {
-                                stack.pop();
-                            } else {
-                                stack.push(String.valueOf(s.charAt(j)));
-                            }
-                            break;
-                        default:
-                            stack.push(String.valueOf(s.charAt(j)));
-                    }
-                }
-            }
-            // s 왼쪽으로 한칸 돌리기
-            s = s.substring(1, s.length()) + s.charAt(0);
-
-            // stack이 비었으면, answer++
-            answer += stack.isEmpty() ? 1 : 0;
+        Map<Character, Character> map = new HashMap<>();
+        map.put(')', '(');
+        map.put('}', '{');
+        map.put(']', '[');
+        
+        // 문자열 회전 및 검사
+        for (int i = 0; i < s.length(); i++) {
+            if (isValid(s, map)) answer++;
+            
+            // 문자열 회전
+            s = s.substring(1) + s.charAt(0);
         }
+        
         return answer;
+    }
+    
+    // 괄호 문자열 검사
+    private boolean isValid(String str, Map<Character, Character> map) {
+        Stack<Character> stack = new Stack<>();
+        
+        for (char c : str.toCharArray()) {
+            
+            // 열린 괄호 처리
+            if (map.containsValue(c)) stack.push(c);
+            
+            // 닫힌 괄호 처리
+            else if (map.containsKey(c)){
+                if (stack.isEmpty() || stack.pop() != map.get(c)) return false;  
+            }
+        }
+        
+        return stack.isEmpty();
     }
 }
