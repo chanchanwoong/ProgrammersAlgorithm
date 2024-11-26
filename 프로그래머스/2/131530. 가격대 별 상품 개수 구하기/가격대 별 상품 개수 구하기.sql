@@ -1,5 +1,6 @@
--- 코드를 입력하세요
-select truncate(price,-4) 'price_group', count(product_id) as products
-    from product
-    group by price_group
-    order by price_group;
+SELECT CONCAT(PRICE DIV 10000, '0000') AS 'PRICE_GROUP'
+    , COUNT(*) AS 'PRODUCTS'
+FROM PRODUCT
+GROUP BY PRICE DIV 10000
+ORDER BY PRICE_GROUP
+;
