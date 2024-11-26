@@ -1,10 +1,11 @@
--- 코드를 입력하세요
-select b.user_id, b.nickname, sum(a.price) as 'total_sales'
-    from used_goods_board a
-        inner join used_goods_user b
-        on a.writer_id = b.user_id
-    where a.status = 'done'
-    group by b.user_id
-    having total_sales >= 700000
-    order by total_sales
+SELECT B.USER_ID
+    , B.NICKNAME
+    , SUM(A.PRICE) AS 'TOTAL_SALES'
+FROM USED_GOODS_BOARD A 
+    INNER JOIN USED_GOODS_USER B
+    ON A.WRITER_ID = B.USER_ID
+WHERE A.STATUS = 'DONE'
+GROUP BY B.USER_ID
+HAVING SUM(A.PRICE) >= 700000
+ORDER BY TOTAL_SALES ASC
 ;
