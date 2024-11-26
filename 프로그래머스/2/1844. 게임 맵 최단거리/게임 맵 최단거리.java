@@ -4,13 +4,15 @@ class Solution {
     
     private static int[] dx = {1, 0, -1, 0};
     private static int[] dy = {0, 1, 0, -1};
+    private static boolean[][] visited;
     
     // 노드 생성
     private static class Node {
-        int r, c;
-        public Node(int r, int c) {
+        int r, c, dist;
+        public Node(int r, int c, int dist) {
             this.r = r;
             this.c = c;
+            this.dist = dist;
         }
     }
     
@@ -18,18 +20,21 @@ class Solution {
         // 세로(N), 가로(M) 지정
         int N = maps.length;
         int M = maps[0].length;
-        
-        // 최단 거리를 저장할 배열 생성
-        int[][] dist = new int[N][M];
-        
+        int answer = 1;
+        visited = new boolean[N][M];
         Queue<Node> queue = new LinkedList<>();
         
         // 초기 위치 노드 삽입
-        queue.offer(new Node(0, 0));
-        dist[0][0] = 1;
+        queue.offer(new Node(0, 0, 1));
+        visited[0][0] = true;
         
         while (!queue.isEmpty()) {
             Node now = queue.poll();
+            
+            // 목표에 도달
+            if (now.r == N - 1 && now.c == M - 1) {
+                return now.dist;
+            }
             
             // 이동 가능한 방향 확인
             for (int i = 0; i < 4; i++) {
@@ -40,18 +45,17 @@ class Solution {
                     continue;
                 }
                 
-                if (maps[nr][nc] == 0) {
+                if (maps[nr][nc] == 0 || visited[nr][nc]) {
                     continue;
                 }
                 
-                if (dist[nr][nc] == 0) {
-                    queue.offer(new Node(nr, nc));
-                    dist[nr][nc] = dist[now.r][now.c] + 1;
-                }
+                // 방문 처리 및 다음 노드 추가
+                queue.offer(new Node(nr, nc, now.dist + 1));
+                visited[nr][nc] = true;
+                
             }
         }
         
-        // 목적지까지 최단 거리 반환, 목적지 도달 못 하면 -1 반환
-        return dist[N - 1][M - 1] == 0 ? -1 : dist[N - 1][M - 1];
+        return -1;
     }
 }
